@@ -1,0 +1,2 @@
+rootProject.name='add_textview_listenter'
+include ':app'
