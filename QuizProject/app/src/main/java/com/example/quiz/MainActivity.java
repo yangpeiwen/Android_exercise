@@ -3,6 +3,7 @@ package com.example.quiz;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,6 +15,9 @@ public class MainActivity extends AppCompatActivity {
     private Button mFalseButton;
     private Button mNextButton;
     private TextView mQuestionTextView;
+    //设置要用到的字符串
+    private static final String KEY_INDEX = "index";
+    private static final String TAG = "QuizActivity";
 
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_oceans,true),
@@ -82,5 +86,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         updateQuestion();
+    }
+    //这里重写了onSaveInstanceState，保存下mCurrentIndex的数值，使得旋转屏幕后造成的activity重启能够读取到之前显示提问的状态
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i(TAG,"onSaveInstanceState");
+        savedInstanceState.putInt(KEY_INDEX,mCurrentIndex);
     }
 }
