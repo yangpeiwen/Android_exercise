@@ -2,6 +2,7 @@ package com.example.quiz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,7 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
+    // 第五章，新增一个activity用来显示答案
+    private Button mCheatButton;
+    //
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mNextButton;
@@ -58,10 +61,11 @@ public class MainActivity extends AppCompatActivity {
         //调用setText可以通过不同id动态获得文本
         //mQuestionTextView.setText(question);
 
-        //三个按钮
+        //四个按钮
         mTrueButton = (Button)findViewById(R.id.true_button);
         mFalseButton = (Button)findViewById(R.id.false_button);
         mNextButton = (Button)findViewById(R.id.next_button);
+        mCheatButton = (Button)findViewById(R.id.cheat_button);
         //按钮的监听
         mTrueButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -74,6 +78,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 checkAnswer(false);
+            }
+        });
+
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*普通的启动方式
+                start CheatActivity,这里通过intent启动另外一个CheatActivity，通过调用startActivity呼叫
+                操作系统的ActivityManager，然后ActivityManager负责创建Activity实例并调用其onCreate方法。
+                而intent类可以告诉Activitymanager启动该哪个activity以及如何找到它，这是两个参数，分别是Class参数告诉启动
+                哪个activity，Context参宿和告诉在哪里可以找到这个activity。
+                Intent i = new Intent(MainActivity.this,CheatActivity.class);
+                //上面的mainactivity就是Context参数，说明在这里找到，cheatactivity.class是class参数说明是启动哪个activity
+                 */
+
+                /*带有extra信息的启动方式，因为我们要在启动CheatActivity同时给CheatActivity发送一些信息，这里直接在CheatActivity封装成一个方法，在创建intent实例时就完成
+                也就是下面的CheatActivity.newIntent方法。answerIsTrue是需要通过extra传递的信息*/
+                boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+                Intent i = CheatActivity.newIntent(MainActivity.this,answerIsTrue);
+                startActivity(i);
             }
         });
 
