@@ -2,6 +2,7 @@ package com.example.quiz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,12 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     // 第五章，新增一个activity用来显示答案
     private Button mCheatButton;
+    //
+    //5-13的请求代码，用来区分是哪个子Activity返回的消息
+    private static  final int REQUEST_CODE_CHEAT = 0;
+    //
+    //存储来自CheatActivity的信息，判断用户受否作弊
+    private  boolean mIsCheater;
     //
     private Button mTrueButton;
     private Button mFalseButton;
@@ -97,7 +104,11 @@ public class MainActivity extends AppCompatActivity {
                 也就是下面的CheatActivity.newIntent方法。answerIsTrue是需要通过extra传递的信息*/
                 boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
                 Intent i = CheatActivity.newIntent(MainActivity.this,answerIsTrue);
-                startActivity(i);
+                //startActivity(i);暂时使用，用下面的startActivityForResult替换
+
+                //5-13同理，这里也需要接收来自CheatActivity的信息，所以不再使用之前的startActivity
+                //转而使用能够接收返回信息的startActivityForResult(i,REQUEST_CODE_CHEAT)
+                startActivityForResult(i,REQUEST_CODE_CHEAT);
             }
         });
 
@@ -118,4 +129,17 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG,"onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX,mCurrentIndex);
     }
+    //5-13，一个回调方法，用来判断
+    @Override
+    protected void onActivityResult(int requestCode,int resultCode,intent data){
+        if(resultCode != Activity.RESULT_OK){
+            return;
+        }
+        if (requestCode == REQUEST_CODE_CHEAT) {
+            if(data == null){
+                return;
+            }
+        }
+    }
+
 }

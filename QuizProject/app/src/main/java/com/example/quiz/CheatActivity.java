@@ -14,6 +14,9 @@ public class CheatActivity extends AppCompatActivity {
     //5-10创建静态的字符串，这是我们需要通过EXTRA传递过去的key，为了方便识别来自各个activity的，我们一般前面加上包名
     private  static final String EXTRA_ANSWER_IS_TRUE = "com.example.quiz.answer_is_true";
     //
+    //5-13创建静态的字符串，这是我们需要通过EXTRA回传过去的key，为了方便识别来自各个activity的，我们一般前面加上包名
+    private static final String EXTRA_ANSWER_SHOW = "com.example.quiz.answer_show";
+    //
     //5-11CheatActivity接受后还需要解析出所传输的数值，先定义一个boolean接收
     private boolean mAnswerIsTrue;
     //
@@ -30,7 +33,20 @@ public class CheatActivity extends AppCompatActivity {
         i.putExtra(EXTRA_ANSWER_IS_TRUE,answerIsTrue);
         return i;
     }
-
+    /*5-13封装了将返回信息通过Extra传递给MainActivity的方法，与上面的类似，只不过Intent写法不同，最后的
+    setResult是为将结果代码和intent打包
+     */
+    private void setAnswerShownResult(boolean isAnswerShown){
+        Intent data = new Intent();
+        data.putExtra(EXTRA_ANSWER_SHOW,isAnswerShown);
+        setResult(RESULT_OK,data);
+    }
+    //end
+    //5-13
+    public static boolean wasAnswerShow(Intent result){
+        return result.getBooleanExtra(EXTRA_ANSWER_SHOW,false);
+    }
+    //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +67,11 @@ public class CheatActivity extends AppCompatActivity {
                 } else {
                     mAnswerTextView.setText(R.string.false_button);
                 }
+                //5-13调用之前写好的方法
+                setAnswerShownResult(true);
             }
         });
         //end
     }
+
 }
