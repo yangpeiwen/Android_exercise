@@ -34,7 +34,8 @@ public class CheatActivity extends AppCompatActivity {
         return i;
     }
     /*5-13封装了将返回信息通过Extra传递给MainActivity的方法，与上面的类似，只不过Intent写法不同，最后的
-    setResult是为将结果代码和intent打包
+    setResult是为将结果代码和intent打包，是一个常用的子Activity返回方法，能够返回数据和一个结果代码例如RESULT_OK，也可以是
+    其他的代码，主要是提供给主Activity判断用的。
      */
     private void setAnswerShownResult(boolean isAnswerShown){
         Intent data = new Intent();
@@ -67,7 +68,7 @@ public class CheatActivity extends AppCompatActivity {
                 } else {
                     mAnswerTextView.setText(R.string.false_button);
                 }
-                //5-13调用之前写好的方法
+                //5-13调用之前写好的方法,将信息回传
                 setAnswerShownResult(true);
             }
         });
