@@ -74,7 +74,11 @@ public class CrimeListFragment extends Fragment {
         // 注意getActivity是fragment的一种方法，用来获取其所依附的activity
         @Override
         public void onClick(View v){
-            Intent intent = CrimeActivity.newIntent(getActivity(),mCrime.getId());
+
+            //启动老的CrimeActivity
+            // Intent intent = CrimeActivity.newIntent(getActivity(),mCrime.getId());
+            //启动新的CrimePagerActivity
+            Intent intent = CrimePagerActivity.newIntent(getActivity(),mCrime.getId());
             startActivity(intent);
         }
     }
