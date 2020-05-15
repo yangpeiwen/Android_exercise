@@ -152,4 +152,13 @@ public class CrimeFragment extends Fragment {
             mDateButton.setText(mCrime.getDate().toString());
         }
     }
+
+    //14.7用户可能在CrimeFragment中修改Crime实例，修改完成后，我们需要刷新CrimeLab的Crime数据，这可以通过在CrimeFragment.java中覆盖
+    //CrimeFragment.onPause方法完成
+    @Override
+    public void onPause() {
+        super.onPause();
+        //onPause后直接调用个updateCrime方法
+        CrimeLab.get(getActivity()).updateCrime(mCrime);
+    }
 }

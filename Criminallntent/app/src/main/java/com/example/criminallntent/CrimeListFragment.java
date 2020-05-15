@@ -84,6 +84,13 @@ public class CrimeListFragment extends Fragment {
     }
 
     //步骤3：Adapter的相关实现，要创建ViewHolder并且与数据绑定，封装从CrimeLab获取的crime
+    /*
+    Adapter是直接和RecyclerView交互的，RecyclerView找到Adapter时，Adapter会按照步骤完成三件事
+    1.询问数组列表有多少对象
+    2.创建ViewHolder
+    3.绑定数据
+    这三个就像OnCreate，Onpause等等一样，到了需要的时候就自动调用。所以时要覆盖具体的方法
+     */
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder>{
         //这里使用的数据是前面写好的Crime的数组类，其构造方法获取一个Lis<Crime>对象
         private List<Crime> mCrimes;
