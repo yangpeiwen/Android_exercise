@@ -10,7 +10,14 @@ public class Crime {
     private boolean mSolved;
 
     public Crime(){
-        mId = UUID.randomUUID();
+        //14-15代码使用数据库，所以不能用原来的构造方法了
+       // mId = UUID.randomUUID();
+       // mDate = new Date();
+        this(UUID.randomUUID());
+    }
+
+    public Crime(UUID id){
+        mId = id;
         mDate = new Date();
     }
 

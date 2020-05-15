@@ -50,7 +50,20 @@ public class CrimeLab {
      */
     public List<Crime> getCrimes(){
 //        return mCrimes;
-        return new ArrayList<>();
+        List<Crime> crimes = new ArrayList<>();
+
+        CrimeCursorWrapper cursor = queryCrimes(null,null);
+
+        try{
+            cursor.moveToFirst();
+            while(!cursor.isAfterLast()) {
+                crimes.add(cursor.getCrime());
+                cursor.moveToNext();
+            }
+            }finally {
+            cursor.close();
+        }
+        return crimes;
     }
     public Crime getCrime(UUID id){
    //     for(Crime crime : mCrimes){
@@ -108,7 +121,9 @@ public class CrimeLab {
     }
     //读取数据库要用到query的方法，
     //参数table是要查询的数据表，参数columns指定要依次获取那些字段的值，参数where和whereArgs的作用和update方法的一样
-    private Cursor queryCrimes(String whereClause ,String[] whereArgs){
+    //14-17修改：CrimeCursorWrapper类可以直接从CrimeLab中取得List<Crime>，大致思路为：将查询返回的cursor封装到CrimeCursorWrapper，然后调用getCirme()方法取出Crime
+    //这里先让queryCrimes方法返回CrimeCursorWrapper对象，将
+    private CrimeCursorWrapper queryCrimes(String whereClause ,String[] whereArgs){
         Cursor cursor = mDatabase.query(
               CrimeDbSchema.CrimeTable.NAME,
                 null,
@@ -119,7 +134,7 @@ public class CrimeLab {
                 null
 
         );
-        return cursor;
+        return new CrimeCursorWrapper(cursor);
     }
 
 }
